@@ -1,3 +1,4 @@
+import { moeda, NOME_STATUS_INICIATIVA, NOME_STATUS_NECESSIDADE } from './rotulos';
 import type { Decisao, Estado, Iniciativa, Necessidade, StatusIniciativa, StatusNecessidade, TipoDecisao } from './tipos';
 
 /** Efeito de cada tipo de decisão sobre a iniciativa vinculada. Repriorização e alteração de orçamento não mudam o status. */
@@ -28,8 +29,8 @@ export function aplicarDecisao(e: Estado, d: Decisao, autor: string, quando: str
     const status = STATUS_INICIATIVA_APOS[d.tipo] ?? i.status;
     const orcamento = d.tipo === 'alteracao_orcamento' ? d.novoOrcamento! : i.orcamento;
     const mudancas: string[] = [];
-    if (status !== i.status) mudancas.push(`status ${i.status} → ${status}`);
-    if (orcamento !== i.orcamento) mudancas.push(`orçamento ${i.orcamento} → ${orcamento}`);
+    if (status !== i.status) mudancas.push(`status ${NOME_STATUS_INICIATIVA[i.status]} → ${NOME_STATUS_INICIATIVA[status]}`);
+    if (orcamento !== i.orcamento) mudancas.push(`orçamento ${moeda(i.orcamento)} → ${moeda(orcamento)}`);
     const descricao = `Decisão ${d.codigo}${mudancas.length ? `: ${mudancas.join('; ')}` : ' registrada'}.`;
     return { ...i, status, orcamento, progresso: status === 'concluida' ? 100 : i.progresso, historico: [...i.historico, { quando, autor, descricao }] };
   });
@@ -37,7 +38,7 @@ export function aplicarDecisao(e: Estado, d: Decisao, autor: string, quando: str
     if (n.id !== d.necessidadeId) return n;
     const novo = n.status === 'convertida' ? undefined : STATUS_NECESSIDADE_APOS[d.tipo];
     const status = novo ?? n.status;
-    const descricao = `Decisão ${d.codigo}${status !== n.status ? `: status ${n.status} → ${status}` : ' registrada'}.`;
+    const descricao = `Decisão ${d.codigo}${status !== n.status ? `: status ${NOME_STATUS_NECESSIDADE[n.status]} → ${NOME_STATUS_NECESSIDADE[status]}` : ' registrada'}.`;
     return { ...n, status, historico: [...n.historico, { quando, autor, descricao }] };
   });
   return { ...e, decisoes: [d, ...e.decisoes], iniciativas, necessidades };

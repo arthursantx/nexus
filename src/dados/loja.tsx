@@ -1,7 +1,7 @@
 import { aplicarDecisao } from '../dominio/decisoes';
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { validarPesos } from '../dominio/priorizacao';
-import { NOME_STATUS_INICIATIVA, NOME_TIPO_DECISAO, pode, type Permissao } from '../dominio/rotulos';
+import { mesAno, moeda, NOME_STATUS_INICIATIVA, NOME_STATUS_NECESSIDADE, NOME_TIPO_DECISAO, pode, type Permissao } from '../dominio/rotulos';
 import type { Criterios, Decisao, Estado, Iniciativa, MedicaoValor, Necessidade, Pesos, Risco, StatusIniciativa, StatusNecessidade, Usuario } from '../dominio/tipos';
 import { estadoInicial, ORG, VERSAO_DADOS } from './demonstracao';
 
@@ -158,7 +158,7 @@ export function ProvedorLoja({ children }: { children: ReactNode }) {
           }),
           'Avaliou necessidade',
           n.codigo,
-          `Status: ${status}; esforço ${esforco}.`,
+          `Status: ${NOME_STATUS_NECESSIDADE[status]}; esforço ${esforco}/5.`,
         );
       },
 
@@ -217,7 +217,7 @@ export function ProvedorLoja({ children }: { children: ReactNode }) {
           }),
           'Atualizou iniciativa',
           i.codigo,
-          `${NOME_STATUS_INICIATIVA[d.status]}, ${d.progresso}% concluída, realizado R$ ${d.custoRealizado}.`,
+          `${NOME_STATUS_INICIATIVA[d.status]}, ${d.progresso}% concluída, realizado ${moeda(d.custoRealizado)}.`,
         );
       },
 
@@ -235,7 +235,7 @@ export function ProvedorLoja({ children }: { children: ReactNode }) {
           }),
           'Registrou medição',
           i.codigo,
-          `${med.mes}: R$ ${med.valor} (${med.confirmado ? 'confirmado' : 'estimado'}).`,
+          `${mesAno(med.mes)}: ${moeda(med.valor)} (${med.confirmado ? 'confirmado' : 'estimado'}).`,
         );
       },
 

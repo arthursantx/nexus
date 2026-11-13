@@ -29,19 +29,7 @@ export default function VisaoGeral() {
     <>
       <Cabecalho titulo="Executive Overview" subtitulo={`Indicadores calculados a partir dos dados cadastrados · valores até ${mesAno(MES_REFERENCIA)}`} />
 
-      <div className="kpis">
-        <Kpi rotulo="Necessidades abertas" valor={String(k.necessidadesAbertas)} detalhe={`${k.necessidadesCriticasSemIniciativa} com prioridade crítica`} />
-        <Kpi rotulo="Iniciativas ativas" valor={String(k.iniciativasAtivas)} detalhe={`${k.emExecucao} em execução`} />
-        <Kpi rotulo="Orçamento ativo" valor={moedaCurta(k.orcamentoAtivo)} detalhe={`${moedaCurta(k.custoRealizado)} realizados no total`} />
-        <Kpi rotulo="Iniciativas em risco" valor={String(k.emRisco)} tom={k.emRisco ? 'alerta' : undefined} detalhe="Risco alto ou gasto à frente da entrega" />
-        <Kpi rotulo="Benefício projetado" valor={moedaCurta(k.beneficioProjetadoAnual)} detalhe="por ano, iniciativas aprovadas" />
-        <Kpi rotulo="Benefício confirmado" valor={moedaCurta(k.beneficioConfirmado)} tom="positivo" detalhe={`${percentual(k.realizacao)} do projetado no período`} />
-        <Kpi rotulo="Benefício estimado" valor={moedaCurta(k.beneficioEstimado)} detalhe="medido, aguardando validação" />
-        <Kpi rotulo="Capacidade liberada" valor={`${numero(k.horasMes)} h/mês`} detalhe={`≈ ${numero(capacidadeLiberada(k.horasMes))} pessoas · não é economia financeira`} />
-      </div>
-
-      <div className="grade-2">
-        <Cartao titulo="Executive Highlights">
+      <Cartao titulo="O que pede atenção agora" className="cartao-atencao">
           {destaques.length ? (
             <ul className="destaques">
               {destaques.map((d, i) => (
@@ -56,6 +44,18 @@ export default function VisaoGeral() {
           )}
         </Cartao>
 
+      <div className="kpis">
+        <Kpi rotulo="Necessidades abertas" valor={String(k.necessidadesAbertas)} detalhe={`${k.necessidadesCriticasSemIniciativa} com prioridade crítica`} />
+        <Kpi rotulo="Iniciativas ativas" valor={String(k.iniciativasAtivas)} detalhe={`${k.emExecucao} em execução`} />
+        <Kpi rotulo="Orçamento ativo" valor={moedaCurta(k.orcamentoAtivo)} detalhe={`${moedaCurta(k.custoRealizado)} realizados no total`} />
+        <Kpi rotulo="Iniciativas em risco" valor={String(k.emRisco)} tom={k.emRisco ? 'alerta' : undefined} detalhe="Risco alto ou gasto à frente da entrega" />
+        <Kpi rotulo="Benefício projetado" valor={moedaCurta(k.beneficioProjetadoAnual)} detalhe="por ano, iniciativas aprovadas" />
+        <Kpi rotulo="Benefício confirmado" valor={moedaCurta(k.beneficioConfirmado)} tom="positivo" detalhe={`${percentual(k.realizacao)} do projetado no período`} />
+        <Kpi rotulo="Benefício estimado" valor={moedaCurta(k.beneficioEstimado)} detalhe="medido, aguardando validação" />
+        <Kpi rotulo="Capacidade liberada" valor={`${numero(k.horasMes)} h/mês`} detalhe={`≈ ${numero(capacidadeLiberada(k.horasMes))} pessoas · não é economia financeira`} />
+      </div>
+
+      <div className="grade-1">
         <Cartao titulo="Orçamento por área">
           <div className="grafico" role="img" aria-label="Gráfico de barras com orçamento e custo realizado por área">
             <ResponsiveContainer width="100%" height={260}>

@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Tour } from './componentes/Tour';
+import { BotaoAcessibilidade } from './componentes/Acessibilidade';
+import { SeletorIdioma } from './i18n/contexto';
+import { t } from './i18n/motor';
 import { AJUDA } from './dominio/guia';
 import { MENU } from './menu';
 import Guia from './paginas/Guia';
@@ -139,7 +142,7 @@ export default function App() {
           <button
             type="button"
             className="link-discreto"
-            onClick={() => { if (confirm('Restaurar os dados de demonstração? Suas alterações neste navegador serão descartadas.')) restaurar(); }}
+            onClick={() => { if (confirm(t('Restaurar os dados de demonstração? Suas alterações neste navegador serão descartadas.'))) restaurar(); }}
           >
             Restaurar dados de demonstração
           </button>
@@ -147,7 +150,11 @@ export default function App() {
       </aside>
       <div className="principal">
         <div className="faixa-demo" role="region" aria-label="Aviso de demonstração">
-          <strong>Demonstração</strong> · Vértice Group é uma empresa fictícia e todos os dados são de exemplo. As alterações ficam salvas só neste navegador.
+          <p><strong>Demonstração</strong> · Vértice Group é uma empresa fictícia e todos os dados são de exemplo. As alterações ficam salvas só neste navegador.</p>
+          <div className="ferramentas">
+            <SeletorIdioma />
+            <BotaoAcessibilidade />
+          </div>
           <button type="button" className="menu-movel" aria-expanded={menuAberto} onClick={() => setMenuAberto((v) => !v)}>
             Menu
           </button>

@@ -1,4 +1,6 @@
+import { BotaoAcessibilidade } from '../componentes/Acessibilidade';
 import { useLoja } from '../dados/loja';
+import { SeletorIdioma } from '../i18n/contexto';
 import { NOME_PAPEL } from '../dominio/rotulos';
 
 const RESUMO: Record<string, string> = {
@@ -14,6 +16,10 @@ export default function Entrar() {
   const { estado, entrar } = useLoja();
   return (
     <main className="entrar">
+      <div className="ferramentas ferramentas-entrar">
+        <SeletorIdioma escuro />
+        <BotaoAcessibilidade escuro />
+      </div>
       <div className="entrar-caixa">
         <div className="marca marca-grande">
           <span className="marca-simbolo" aria-hidden="true">N</span>
@@ -30,10 +36,11 @@ export default function Entrar() {
         <ul className="perfis">
           {estado.usuarios.map((u) => (
             <li key={u.id}>
-              <button type="button" className="perfil" onClick={() => entrar(u.id)}>
+              <button type="button" className={`perfil ${u.papel === 'cio' ? 'perfil-recomendado' : ''}`} onClick={() => entrar(u.id)}>
                 <span className="avatar" aria-hidden="true">{u.nome.split(' ').map((p) => p[0]).slice(0, 2).join('')}</span>
                 <span>
                   <strong>{u.nome}</strong>
+                  {u.papel === 'cio' && <b className="recomendado">Recomendado para conhecer o sistema</b>}
                   <em>{NOME_PAPEL[u.papel]}</em>
                   <small>{RESUMO[u.papel]}</small>
                 </span>

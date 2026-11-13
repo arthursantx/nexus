@@ -73,28 +73,47 @@ export function pode(papel: Papel, permissao: Permissao): boolean {
   return PERMISSOES[papel].includes(permissao);
 }
 
-const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
-const BRL_CURTO = new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 });
-const NUM = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
-
-export const moeda = (v: number) => BRL.format(v);
-export const moedaCurta = (v: number) => `R$ ${BRL_CURTO.format(v)}`;
-export const numero = (v: number) => NUM.format(v);
-export const percentual = (v: number | null) => (v === null ? '—' : `${NUM.format(v * 100)}%`);
-
-/** Datas AAAA-MM-DD ou ISO em dd/mm/aaaa, sem depender do fuso do navegador. */
-export function data(valor: string): string {
-  const [a, m, d] = valor.slice(0, 10).split('-');
-  return `${d}/${m}/${a}`;
+export type Idioma = 'pt' | 'en';
+let idiomaFormatos: Idioma = 'pt';
+/** Os formatadores seguem o idioma da interface (números, datas e meses). */
+export function definirIdiomaFormatos(i: Idioma) {
+  idiomaFormatos = i;
 }
 
-const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+const FORMATOS = {
+  pt: {
+    brl: new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }),
+    curto: new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 }),
+    num: new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 }),
+  },
+  en: {
+    brl: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'BRL', currencyDisplay: 'symbol', maximumFractionDigits: 0 }),
+    curto: new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }),
+    num: new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 }),
+  },
+};
+
+export const moeda = (v: number) => FORMATOS[idiomaFormatos].brl.format(v);
+export const moedaCurta = (v: number) => `R$ ${FORMATOS[idiomaFormatos].curto.format(v)}`;
+export const numero = (v: number) => FORMATOS[idiomaFormatos].num.format(v);
+export const percentual = (v: number | null) => (v === null ? '—' : `${FORMATOS[idiomaFormatos].num.format(v * 100)}%`);
+
+/** Datas AAAA-MM-DD ou ISO em dd/mm/aaaa (ou mm/dd/aaaa em inglês), sem depender do fuso do navegador. */
+export function data(valor: string): string {
+  const [a, m, d] = valor.slice(0, 10).split('-');
+  return idiomaFormatos === 'en' ? `${m}/${d}/${a}` : `${d}/${m}/${a}`;
+}
+
+const MESES = {
+  pt: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
+  en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+};
 export function mesAno(valor: string): string {
   const [a, m] = valor.split('-');
-  return `${MESES[Number(m) - 1]}/${a.slice(2)}`;
+  return `${MESES[idiomaFormatos][Number(m) - 1]}/${a.slice(2)}`;
 }
 
 export function dataHora(iso: string): string {
   const d = new Date(iso);
-  return d.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+  return d.toLocaleString(idiomaFormatos === 'en' ? 'en-US' : 'pt-BR', { dateStyle: 'short', timeStyle: 'short' });
 }

@@ -240,3 +240,27 @@ describe('guia de uso', () => {
     for (const p of TOUR) expect(rotas).toContain(p.rota);
   });
 });
+
+describe('perguntas em inglês', () => {
+  const e = estadoInicial();
+  it('entende perguntas em inglês sobre risco, orçamento, valor e área', () => {
+    expect(responder('Which initiatives are at risk?', e, MES_REFERENCIA).suficiente).toBe(true);
+    expect(responder('How is the budget for Finance?', e, MES_REFERENCIA).recomendacao).toContain('Financeiro');
+    expect(responder('Are we delivering value?', e, MES_REFERENCIA).suficiente).toBe(true);
+    expect(responder('What should we prioritize first?', e, MES_REFERENCIA).recomendacao).toMatch(/^Avançar primeiro/);
+  });
+});
+
+describe('tradução', () => {
+  it('traduz textos fixos e textos com números', async () => {
+    const { DICIONARIO, PADROES } = await import('../i18n/en');
+    const tr = (s: string): string | null => {
+      if (s in DICIONARIO) return DICIONARIO[s];
+      for (const [re, fn] of PADROES) { const m = s.match(re); if (m) { const r = fn(m, (x) => tr(x) ?? x); if (r !== null) return r; } }
+      return null;
+    };
+    expect(tr('Iniciativas em risco')).toBe('Initiatives at risk');
+    expect(tr('INI-003 Novo CRM comercial: 90,4% do orçamento consumido com 55% de progresso.')).toBe('INI-003 New sales CRM: 90,4% of budget consumed with 55% progress.');
+    expect(tr('Decisão DEC-008: status Em execução → Pausada.')).toBe('Decision DEC-008: status In progress → Paused.');
+  });
+});

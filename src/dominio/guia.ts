@@ -15,7 +15,7 @@ export const AJUDA: Record<string, AjudaTela> = {
     paraQue: 'É o painel da diretoria: mostra, em uma tela, quanto está sendo pedido, quanto está sendo gasto, o que está em risco e o retorno que já apareceu.',
     passos: [
       'Leia os oito indicadores do topo. Cada um diz de onde vem o número.',
-      'Em “Executive Highlights”, veja os alertas gerados a partir dos dados. Clique em um alerta para abrir o registro.',
+      'No bloco “O que pede atenção agora”, veja os alertas gerados a partir dos dados. Clique em um alerta para abrir o registro.',
       'Use “Prioridades em aberto” e “Portfólio por status” para ir direto às listas completas.',
     ],
     dica: 'Benefício confirmado é o que a área validou. Estimado ainda não foi validado. Os dois nunca são somados.',

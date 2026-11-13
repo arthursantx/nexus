@@ -23,7 +23,8 @@ flowchart TB
 | `src/dominio` | Tipos, regras de negócio, cálculo de score, valor, risco, decisões, CSV e o motor do Intelligence |
 | `src/dados` | Dados de demonstração (Vértice Group) e a loja de estado (persistência, permissões, auditoria) |
 | `src/paginas` | Uma tela por módulo |
-| `src/componentes` | Componentes visuais reutilizáveis (KPIs, selos, modal, barras) |
+| `src/componentes` | Componentes visuais reutilizáveis (KPIs, selos, modal, barras, tour, painel de acessibilidade) |
+| `src/i18n` | Tradução PT → EN: dicionário de textos fixos e padrões para textos com números e nomes |
 
 ### NEXUS Intelligence na fase 1
 
@@ -47,6 +48,10 @@ flowchart LR
 - Todas as tabelas têm `organizacaoId`, e as consultas filtram por ele (multiempresa).
 
 O esquema planejado está em [`prisma/schema.prisma`](../prisma/schema.prisma) e no [modelo de dados](09-modelo-de-dados.md).
+
+### Idiomas
+
+O português é a língua de origem. Em inglês, um observador troca cada texto exibido pela tradução do dicionário (`src/i18n/en.ts`). Números, moeda e datas seguem o idioma escolhido. Conteúdo digitado pelo usuário não é traduzido. Um teste de ponta a ponta percorre todas as telas em inglês e lista qualquer texto sem tradução.
 
 ## Qualidade
 

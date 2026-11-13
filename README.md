@@ -25,10 +25,16 @@ Pedidos de tecnologia chegam de todas as áreas, sem critério comum. A prioriza
 | **Value Tracking** | Benefício projetado × confirmado × estimado, ROI e payback |
 | **Trilha de auditoria** | Quem alterou o quê, e quando |
 | **Comece aqui** | Tour guiado, roteiro por perfil, ajuda de cada tela e glossário |
+| **Português e inglês** | Toda a interface em PT e EN, inclusive as respostas do Intelligence (link direto: `?lang=en`) |
+| **Acessibilidade** | Tamanho do texto, alto contraste, fonte de leitura facilitada, espaçamento, destaque de links, pausa de animações, guia de leitura e Libras (VLibras) |
 
 Para experimentar, abra a demonstração e entre com um dos perfis (CEO, CIO/CTO, gerente de TI, PO, analista de negócio ou gestor de área). Cada perfil tem permissões diferentes.
 
 **Primeira vez?** Na primeira visita aparece o convite para um tour guiado de dois minutos. O menu **Comece aqui** mostra o caminho de uma demanda, por onde começar em cada perfil, o que cada tela faz e um glossário. Em todas as telas há o botão **Como usar esta tela** com o passo a passo.
+
+## In English
+
+NEXUS connects business needs, strategic prioritization, the technology portfolio, executive decisions and measured value in one place. Open the demo with `?lang=en` (https://arthursantx.github.io/nexus/?lang=en) or use the PT/EN switch at the top of any screen.
 
 ## Regras que importam
 

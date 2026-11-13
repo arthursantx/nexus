@@ -41,6 +41,17 @@ function insuficiente(motivo: string): Resposta {
   return { suficiente: false, recomendacao: `${motivo} ${SUGESTOES}` };
 }
 
+/** Nomes alternativos das áreas, para perguntas em inglês. */
+const APELIDOS: Record<string, string[]> = {
+  fin: ['finance', 'financial'],
+  com: ['sales', 'commercial'],
+  ops: ['operations'],
+  rh: ['human resources', 'hr '],
+  jur: ['legal'],
+  atd: ['customer service', 'support'],
+  ti: ['technology', ' it '],
+};
+
 export function responder(pergunta: string, e: Estado, mesReferencia: string): Resposta {
   const q = normalizar(pergunta);
   if (!q.trim()) return insuficiente('Escreva uma pergunta.');
@@ -55,13 +66,15 @@ export function responder(pergunta: string, e: Estado, mesReferencia: string): R
     return insuficiente(`Não existe nenhum registro com o código ${cod} na base.`);
   }
 
-  const depto = e.departamentos.find((d) => q.includes(normalizar(d.nome)) || new RegExp(`\\b${normalizar(d.sigla)}\\b`).test(q));
+  const depto = e.departamentos.find(
+    (d) => q.includes(normalizar(d.nome)) || new RegExp(`\\b${normalizar(d.sigla)}\\b`).test(q) || (APELIDOS[d.id] ?? []).some((a) => q.includes(a)),
+  );
 
-  if (/(prioriz|prioridade|primeiro|comecar|proximo passo|o que fazer)/.test(q)) return prioridades(e, depto?.id);
-  if (/(risco|atras|estour|problema|preocup|alerta)/.test(q)) return riscos(e);
-  if (/(orcamento|custo|invest|gasto|budget)/.test(q)) return orcamento(e, depto?.id);
-  if (/(valor|retorno|roi|beneficio|economia|entreg)/.test(q)) return valor(e, mesReferencia);
-  if (/(decis|decid|aprov)/.test(q)) return decisoes(e);
+  if (/(prioriz|prioridade|primeiro|comecar|proximo passo|o que fazer|priorit|first|start|next step|what should)/.test(q)) return prioridades(e, depto?.id);
+  if (/(risco|atras|estour|problema|preocup|alerta|risk|late|delay|overrun|problem|alert|concern)/.test(q)) return riscos(e);
+  if (/(orcamento|custo|invest|gasto|budget|cost|spend)/.test(q)) return orcamento(e, depto?.id);
+  if (/(valor|retorno|roi|beneficio|economia|entreg|value|return|benefit|saving|deliver)/.test(q)) return valor(e, mesReferencia);
+  if (/(decis|decid|aprov|approv)/.test(q)) return decisoes(e);
   if (depto) return area(e, depto.id);
   return insuficiente('Não encontrei nos dados do NEXUS informação para responder a essa pergunta.');
 }
