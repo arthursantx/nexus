@@ -25,7 +25,7 @@ export default function Entrar() {
         <h1>Da necessidade de negócio à decisão executiva.</h1>
         <p className="entrar-texto">
           Esta é uma demonstração com a empresa fictícia <strong>{estado.organizacao.nome}</strong>. Escolha um perfil para entrar; cada um tem permissões
-          diferentes, como em uma empresa real. Nenhuma senha é necessária.
+          diferentes, como em uma empresa real. Nenhuma senha é necessária. Na primeira visita, um tour de dois minutos mostra como usar cada tela.
         </p>
         <ul className="perfis">
           {estado.usuarios.map((u) => (

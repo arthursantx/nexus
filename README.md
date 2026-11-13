@@ -24,8 +24,11 @@ Pedidos de tecnologia chegam de todas as áreas, sem critério comum. A prioriza
 | **Reports & Insights** | Relatórios por período e área, exportação em CSV e PDF |
 | **Value Tracking** | Benefício projetado × confirmado × estimado, ROI e payback |
 | **Trilha de auditoria** | Quem alterou o quê, e quando |
+| **Comece aqui** | Tour guiado, roteiro por perfil, ajuda de cada tela e glossário |
 
 Para experimentar, abra a demonstração e entre com um dos perfis (CEO, CIO/CTO, gerente de TI, PO, analista de negócio ou gestor de área). Cada perfil tem permissões diferentes.
+
+**Primeira vez?** Na primeira visita aparece o convite para um tour guiado de dois minutos. O menu **Comece aqui** mostra o caminho de uma demanda, por onde começar em cada perfil, o que cada tela faz e um glossário. Em todas as telas há o botão **Como usar esta tela** com o passo a passo.
 
 ## Regras que importam
 

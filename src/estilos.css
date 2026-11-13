@@ -247,6 +247,66 @@ main:focus { outline: none; }
 .entrar-nota { font-size: 13.5px; color: var(--cinza); }
 
 /* Responsivo */
+
+/* Correções da tela de entrada e da marca */
+main.entrar { max-width: none; padding: 24px; }
+.marca .marca-simbolo { display: grid; place-items: center; font-size: 18px; color: #fff; flex: none; }
+
+/* Menu com nome em português */
+.menu-texto { display: grid; line-height: 1.25; }
+.menu-texto small { font-size: 11.5px; color: #8d9cb8; }
+.lateral nav a[aria-current='page'] .menu-texto small { color: #b8c6e3; }
+
+/* Convite para o tour */
+.convite { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; background: var(--azul-fundo); border: 1px solid #c7d5f7; border-radius: var(--raio); padding: 14px 18px; }
+.convite strong { display: block; color: var(--marinho); }
+.convite span { color: var(--tinta-2); font-size: 14px; }
+.convite-acoes { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Ajuda de cada tela */
+.ajuda-tela { background: var(--branco); border: 1px solid var(--linha); border-radius: var(--raio); padding: 0 16px; }
+.ajuda-tela summary { cursor: pointer; padding: 12px 0; font-weight: 600; color: var(--azul); list-style: none; }
+.ajuda-tela summary::-webkit-details-marker { display: none; }
+.ajuda-tela summary::before { content: '?'; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--azul-fundo); margin-right: 8px; font-size: 12px; }
+.ajuda-tela[open] { padding-bottom: 14px; }
+.ajuda-tela p, .ajuda-tela ol { margin: 0 0 10px; color: var(--tinta-2); }
+.ajuda-tela ol { padding-left: 20px; display: grid; gap: 4px; }
+
+/* Tour guiado */
+.tour { position: fixed; right: 24px; bottom: 24px; z-index: 50; width: min(380px, calc(100vw - 32px)); background: var(--marinho); color: #e6ecf7; border-radius: 16px; padding: 18px 20px; box-shadow: 0 20px 50px -12px rgb(14 26 47 / 55%); }
+.tour h2 { margin: 6px 0 6px; font-size: 19px; color: #fff; outline: none; }
+.tour p { margin: 0 0 14px; color: #c9d3e6; font-size: 14.5px; }
+.tour-topo { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: #9fb0cf; }
+.tour-fechar { background: none; border: 0; color: #c9d3e6; font-size: 22px; line-height: 1; cursor: pointer; padding: 2px 6px; border-radius: 6px; }
+.tour-fechar:hover { background: rgb(255 255 255 / 10%); }
+.tour-barra { height: 4px; background: rgb(255 255 255 / 12%); border-radius: 4px; margin-top: 8px; overflow: hidden; }
+.tour-barra span { display: block; height: 100%; background: var(--azul-claro); transition: width .2s; }
+.tour-acoes { display: flex; justify-content: flex-end; gap: 8px; }
+.tour .botao-fantasma { color: #fff; border-color: rgb(255 255 255 / 30%); background: transparent; }
+.tour :focus-visible { outline: 2px solid var(--azul-claro); outline-offset: 2px; }
+
+/* Página Comece aqui */
+.nota-guia { margin: 0 0 14px; color: var(--tinta-2); }
+.ciclo { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.ciclo a { display: grid; gap: 4px; height: 100%; box-sizing: border-box; padding: 14px; border: 1px solid var(--linha); border-radius: 10px; text-decoration: none; color: var(--tinta); }
+.ciclo a:hover { border-color: var(--azul); }
+.ciclo span { font-size: 13.5px; color: var(--tinta-2); }
+.ciclo small { font-size: 12px; color: var(--azul); }
+.ciclo .ciclo-numero { width: 24px; height: 24px; border-radius: 50%; background: var(--azul); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 700; }
+.roteiro { margin: 0 0 12px; padding-left: 22px; display: grid; gap: 10px; }
+.roteiro li span { display: block; }
+.telas-guia { display: grid; gap: 8px; }
+.tela-guia { border: 1px solid var(--linha); border-radius: 10px; padding: 0 14px; }
+.tela-guia summary { cursor: pointer; padding: 12px 0; display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+.tela-guia summary span { color: var(--cinza); font-size: 13.5px; }
+.tela-guia[open] { padding-bottom: 12px; }
+.tela-guia p, .tela-guia ol { margin: 0 0 10px; color: var(--tinta-2); }
+.tela-guia ol { padding-left: 20px; display: grid; gap: 4px; }
+.glossario { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 20px; }
+.glossario dt { font-weight: 600; }
+.glossario dd { margin: 2px 0 0; color: var(--tinta-2); font-size: 14px; }
+@media print { .tour, .convite, .ajuda-tela { display: none; } }
+
 @media (max-width: 1100px) {
   .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grade-2 { grid-template-columns: minmax(0, 1fr); }
@@ -282,3 +342,7 @@ main:focus { outline: none; }
   body { background: #fff; }
 }
 .usuario .avatar { color: #1a3a8f; }
+.lateral nav a .menu-texto { width: auto; text-align: left; color: inherit; }
+.lateral nav a .menu-texto small { color: #8d9cb8; }
+.lateral nav a[aria-current='page'] .menu-texto small { color: #b8c6e3; }
+.lateral nav a { padding-top: 7px; padding-bottom: 7px; }

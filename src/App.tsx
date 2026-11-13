@@ -1,4 +1,8 @@
 import { useEffect, useState } from 'react';
+import { Tour } from './componentes/Tour';
+import { AJUDA } from './dominio/guia';
+import { MENU } from './menu';
+import Guia from './paginas/Guia';
 import { useLoja } from './dados/loja';
 import { NOME_PAPEL } from './dominio/rotulos';
 import Auditoria from './paginas/Auditoria';
@@ -14,17 +18,9 @@ import Relatorios from './paginas/Relatorios';
 import Valor from './paginas/Valor';
 import VisaoGeral from './paginas/VisaoGeral';
 
-const MENU = [
-  { rota: 'visao-geral', nome: 'Executive Overview', icone: '◧' },
-  { rota: 'necessidades', nome: 'Business Needs', icone: '◇' },
-  { rota: 'priorizacao', nome: 'Strategic Prioritization', icone: '△' },
-  { rota: 'portfolio', nome: 'Technology Portfolio', icone: '▦' },
-  { rota: 'intelligence', nome: 'NEXUS Intelligence', icone: '✦' },
-  { rota: 'decisoes', nome: 'Executive Decisions', icone: '◉' },
-  { rota: 'relatorios', nome: 'Reports & Insights', icone: '▤' },
-  { rota: 'valor', nome: 'Value Tracking', icone: '↗' },
-  { rota: 'auditoria', nome: 'Trilha de auditoria', icone: '≡' },
-];
+
+
+const CHAVE_TOUR = 'nexus:tour-visto';
 
 function lerRota(): string[] {
   const h = window.location.hash.replace(/^#\/?/, '');
@@ -35,6 +31,27 @@ export default function App() {
   const { usuario, sair, estado, restaurar } = useLoja();
   const [rota, setRota] = useState(lerRota);
   const [menuAberto, setMenuAberto] = useState(false);
+  const [tour, setTour] = useState<number | null>(null);
+  const [convite, setConvite] = useState(false);
+
+  useEffect(() => {
+    if (!usuario) return;
+    try {
+      if (!localStorage.getItem(CHAVE_TOUR)) setConvite(true);
+    } catch {
+      /* sem armazenamento: não mostra o convite */
+    }
+  }, [usuario]);
+
+  const marcarVisto = () => {
+    setConvite(false);
+    try {
+      localStorage.setItem(CHAVE_TOUR, '1');
+    } catch {
+      /* ignora */
+    }
+  };
+  const iniciarTour = () => { marcarVisto(); setTour(0); };
 
   useEffect(() => {
     const mudar = () => {
@@ -51,6 +68,9 @@ export default function App() {
   const [pagina, id] = rota;
   let conteudo;
   switch (pagina) {
+    case 'guia':
+      conteudo = <Guia onTour={iniciarTour} />;
+      break;
     case 'necessidades':
       conteudo = id ? <NecessidadeDetalhe id={id} /> : <Necessidades />;
       break;
@@ -98,7 +118,10 @@ export default function App() {
               <li key={m.rota}>
                 <a href={`#/${m.rota}`} aria-current={pagina === m.rota || (!MENU.some((x) => x.rota === pagina) && m.rota === 'visao-geral') ? 'page' : undefined}>
                   <span aria-hidden="true">{m.icone}</span>
-                  {m.nome}
+                  <span className="menu-texto">
+                    {m.nome}
+                    {m.dica && <small>{m.dica}</small>}
+                  </span>
                 </a>
               </li>
             ))}
@@ -130,8 +153,30 @@ export default function App() {
           </button>
         </div>
         <main id="conteudo" tabIndex={-1}>
+          {convite && tour === null && (
+            <div className="convite" role="region" aria-label="Primeira visita">
+              <div>
+                <strong>Primeira vez no NEXUS?</strong>
+                <span>Um tour de dois minutos mostra para que serve cada tela e por onde começar.</span>
+              </div>
+              <div className="convite-acoes">
+                <button type="button" className="botao" onClick={iniciarTour}>Fazer o tour</button>
+                <button type="button" className="botao botao-fantasma" onClick={marcarVisto}>Agora não</button>
+              </div>
+            </div>
+          )}
+          {AJUDA[pagina] && !id && (
+            <details className="ajuda-tela" key={pagina}>
+              <summary>Como usar esta tela</summary>
+              <p>{AJUDA[pagina].paraQue}</p>
+              <ol>{AJUDA[pagina].passos.map((t, i) => <li key={i}>{t}</li>)}</ol>
+              {AJUDA[pagina].dica && <p className="nota"><strong>Dica:</strong> {AJUDA[pagina].dica}</p>}
+              <a href="#/guia" className="link">Ver o guia completo</a>
+            </details>
+          )}
           {conteudo}
         </main>
+        {tour !== null && <Tour passo={tour} onPasso={setTour} onFechar={() => setTour(null)} />}
       </div>
     </div>
   );

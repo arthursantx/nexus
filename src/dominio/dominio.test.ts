@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { estadoInicial, MES_REFERENCIA } from '../dados/demonstracao';
 import { aplicarDecisao } from './decisoes';
+import { AJUDA, ROTEIROS, TOUR } from './guia';
 import { calcularIndicadores, emRisco, gerarDestaques } from './indicadores';
 import { responder } from './intelligence';
 import { calcularScore, explicarScore, faixaDoScore, impacto, PESOS_PADRAO, quadrante, validarPesos } from './priorizacao';
@@ -223,5 +224,19 @@ describe('decisões executivas', () => {
   it('rejeição recusa a necessidade vinculada', () => {
     const n = aplicarDecisao(e, { ...base, tipo: 'rejeicao', necessidadeId: nec.id }, 'A', 'x');
     expect(n.necessidades.find((x) => x.id === nec.id)!.status).toBe('recusada');
+  });
+});
+
+describe('guia de uso', () => {
+  const rotas = ['visao-geral', 'necessidades', 'priorizacao', 'portfolio', 'intelligence', 'decisoes', 'relatorios', 'valor', 'auditoria', 'guia'];
+  it('tem ajuda para todas as telas do menu', () => {
+    for (const r of rotas.filter((x) => x !== 'guia')) expect(AJUDA[r]?.passos.length).toBeGreaterThan(0);
+  });
+  it('tem roteiro para cada perfil, apontando para telas que existem', () => {
+    for (const papel of ['ceo', 'cio', 'gerente_ti', 'po', 'ba', 'gestor_area'] as const) {
+      expect(ROTEIROS[papel].passos.length).toBeGreaterThan(0);
+      for (const p of ROTEIROS[papel].passos) expect(rotas).toContain(p.rota);
+    }
+    for (const p of TOUR) expect(rotas).toContain(p.rota);
   });
 });
