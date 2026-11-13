@@ -1,0 +1,232 @@
+// NEXUS — esquema PLANEJADO para a fase 2 (PostgreSQL).
+// A fase 1 publicada não usa banco: os dados ficam no navegador.
+// Ver docs/09-modelo-de-dados.md e docs/10-roadmap.md.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Papel {
+  ceo
+  cio
+  gerente_ti
+  po
+  ba
+  gestor_area
+}
+
+enum Categoria {
+  eficiencia
+  receita
+  compliance
+  experiencia_cliente
+  dados
+  infraestrutura
+  seguranca
+}
+
+enum StatusNecessidade {
+  nova
+  em_analise
+  priorizada
+  convertida
+  recusada
+}
+
+enum StatusIniciativa {
+  proposta
+  em_avaliacao
+  aprovada
+  em_planejamento
+  em_execucao
+  pausada
+  concluida
+  cancelada
+}
+
+enum Risco {
+  baixo
+  medio
+  alto
+}
+
+enum TipoDecisao {
+  aprovacao
+  rejeicao
+  repriorizacao
+  alteracao_orcamento
+  pausa
+  encerramento
+}
+
+model Organizacao {
+  id            String         @id @default(cuid())
+  nome          String
+  demonstracao  Boolean        @default(false)
+  // Pesos da matriz (inteiros; a API valida soma = 100)
+  pesoAlinhamento Int @default(25)
+  pesoFinanceiro  Int @default(25)
+  pesoOperacional Int @default(20)
+  pesoUrgencia    Int @default(15)
+  pesoViabilidade Int @default(15)
+  departamentos Departamento[]
+  usuarios      Usuario[]
+  necessidades  Necessidade[]
+  iniciativas   Iniciativa[]
+  decisoes      Decisao[]
+  auditoria     Auditoria[]
+}
+
+model Departamento {
+  id            String       @id @default(cuid())
+  organizacaoId String
+  organizacao   Organizacao  @relation(fields: [organizacaoId], references: [id])
+  nome          String
+  sigla         String
+  necessidades  Necessidade[]
+  iniciativas   Iniciativa[]
+  usuarios      Usuario[]
+
+  @@unique([organizacaoId, sigla])
+}
+
+model Usuario {
+  id             String        @id @default(cuid())
+  organizacaoId  String
+  organizacao    Organizacao   @relation(fields: [organizacaoId], references: [id])
+  nome           String
+  email          String
+  papel          Papel
+  departamentoId String?
+  departamento   Departamento? @relation(fields: [departamentoId], references: [id])
+
+  @@unique([organizacaoId, email])
+}
+
+model Necessidade {
+  id                     String            @id @default(cuid())
+  organizacaoId          String
+  organizacao            Organizacao       @relation(fields: [organizacaoId], references: [id])
+  codigo                 String
+  titulo                 String
+  descricao              String
+  departamentoId         String
+  departamento           Departamento      @relation(fields: [departamentoId], references: [id])
+  solicitante            String
+  categoria              Categoria
+  status                 StatusNecessidade @default(nova)
+  notaAlinhamento        Int
+  notaFinanceiro         Int
+  notaOperacional        Int
+  notaUrgencia           Int
+  notaViabilidade        Int
+  esforco                Int
+  beneficioAnualEstimado Decimal           @db.Decimal(14, 2)
+  horasEconomizadasMes   Decimal           @db.Decimal(8, 1)
+  criadaEm               DateTime          @default(now())
+  iniciativaId           String?
+  iniciativa             Iniciativa?       @relation(fields: [iniciativaId], references: [id])
+  decisoes               Decisao[]
+  eventos                Evento[]
+
+  @@unique([organizacaoId, codigo])
+}
+
+model Iniciativa {
+  id                      String           @id @default(cuid())
+  organizacaoId           String
+  organizacao             Organizacao      @relation(fields: [organizacaoId], references: [id])
+  codigo                  String
+  nome                    String
+  descricao               String
+  departamentoId          String
+  departamento            Departamento     @relation(fields: [departamentoId], references: [id])
+  responsavel             String
+  status                  StatusIniciativa @default(proposta)
+  orcamento               Decimal          @db.Decimal(14, 2)
+  custoRealizado          Decimal          @db.Decimal(14, 2) @default(0)
+  inicio                  DateTime         @db.Date
+  fimPrevisto             DateTime         @db.Date
+  progresso               Int              @default(0)
+  risco                   Risco            @default(baixo)
+  notaAlinhamento         Int
+  notaFinanceiro          Int
+  notaOperacional         Int
+  notaUrgencia            Int
+  notaViabilidade         Int
+  esforco                 Int
+  beneficioProjetadoAnual Decimal          @db.Decimal(14, 2)
+  inicioBeneficio         String?          // AAAA-MM
+  horasEconomizadasMes    Decimal          @db.Decimal(8, 1) @default(0)
+  necessidades            Necessidade[]
+  medicoes                MedicaoValor[]
+  decisoes                Decisao[]
+  eventos                 Evento[]
+
+  @@unique([organizacaoId, codigo])
+}
+
+model MedicaoValor {
+  id           String     @id @default(cuid())
+  iniciativaId String
+  iniciativa   Iniciativa @relation(fields: [iniciativaId], references: [id])
+  mes          String     // AAAA-MM
+  valor        Decimal    @db.Decimal(14, 2)
+  confirmado   Boolean
+  fonte        String
+
+  @@unique([iniciativaId, mes])
+}
+
+model Decisao {
+  id             String       @id @default(cuid())
+  organizacaoId  String
+  organizacao    Organizacao  @relation(fields: [organizacaoId], references: [id])
+  codigo         String
+  data           DateTime     @db.Date
+  tipo           TipoDecisao
+  titulo         String
+  justificativa  String
+  participantes  String[]
+  responsavel    String
+  proximosPassos String
+  prazo          DateTime     @db.Date
+  novoOrcamento  Decimal?     @db.Decimal(14, 2)
+  iniciativaId   String?
+  iniciativa     Iniciativa?  @relation(fields: [iniciativaId], references: [id])
+  necessidadeId  String?
+  necessidade    Necessidade? @relation(fields: [necessidadeId], references: [id])
+
+  @@unique([organizacaoId, codigo])
+}
+
+model Evento {
+  id            String       @id @default(cuid())
+  quando        DateTime     @default(now())
+  autor         String
+  descricao     String
+  necessidadeId String?
+  necessidade   Necessidade? @relation(fields: [necessidadeId], references: [id])
+  iniciativaId  String?
+  iniciativa    Iniciativa?  @relation(fields: [iniciativaId], references: [id])
+}
+
+// Somente inserção: a API não expõe update nem delete.
+model Auditoria {
+  id            String      @id @default(cuid())
+  organizacaoId String
+  organizacao   Organizacao @relation(fields: [organizacaoId], references: [id])
+  quando        DateTime    @default(now())
+  usuario       String
+  papel         Papel
+  acao          String
+  entidade      String
+  detalhe       String
+
+  @@index([organizacaoId, quando])
+}
