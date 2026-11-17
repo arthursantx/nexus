@@ -49,7 +49,7 @@ export default function Entrar() {
           ))}
         </ul>
         <p className="entrar-nota">
-          Projeto idealizado por <a href="https://arthursantx.github.io/projetos/nexus/">Arthur Borges</a> · <a href="https://github.com/arthursantx/nexus">código no GitHub</a>
+          Projeto idealizado por <a href="https://arthursantx.github.io/projetos/nexus/">Arthur Borges</a> · <a href="https://github.com/arthursantx/nexus">código no GitHub</a> · <a href="https://arthursantx.github.io/privacidade/">privacidade e termos</a>
         </p>
       </div>
     </main>

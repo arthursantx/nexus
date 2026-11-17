@@ -1,0 +1,34 @@
+Copyright (c) 2026 Arthur Borges dos Santos. Todos os direitos reservados.
+
+O NEXUS (Strategic Technology Management Platform) — incluindo a ideia do produto,
+os módulos, as regras de negócio, a documentação, o código e o design — foi idealizado
+por Arthur Borges dos Santos. A implementação foi feita com apoio de inteligência
+artificial. Este repositório e a demonstração em https://arthursantx.github.io/nexus/
+estão públicos apenas para consulta e avaliação profissional. Todos os dados da
+demonstração são fictícios.
+
+Não é permitido copiar, reproduzir, modificar, redistribuir, sublicenciar ou usar este
+material, no todo ou em parte, inclusive para fins comerciais ou para criar produtos
+derivados, sem autorização prévia por escrito do autor.
+Pedidos de autorização: arthurborgess21@gmail.com.
+
+As bibliotecas de terceiros usadas (React, Recharts, Vite e outras listadas em
+package.json) mantêm suas próprias licenças.
+
+----------------------------------------------------------------------------------------
+
+Copyright (c) 2026 Arthur Borges dos Santos. All rights reserved.
+
+NEXUS (Strategic Technology Management Platform) — including the product idea, modules,
+business rules, documentation, code and design — was conceived by Arthur Borges dos
+Santos, with the implementation built with AI assistance. This repository and the demo
+at https://arthursantx.github.io/nexus/ are public for viewing and professional
+evaluation only. All demo data is fictional.
+
+No permission is granted to copy, reproduce, modify, redistribute, sublicense or use
+this material, in whole or in part, including for commercial purposes or to create
+derivative products, without the author's prior written permission.
+Permission requests: arthurborgess21@gmail.com.
+
+Third-party libraries used (React, Recharts, Vite and others listed in package.json)
+keep their own licenses.

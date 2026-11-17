@@ -80,6 +80,12 @@ npm run build   # checagem de tipos + build
 - O esquema em `prisma/schema.prisma` é **planejado** para a fase 2 e ainda não é usado.
 - Os números da Vértice Group são inventados para demonstração e não representam nenhuma empresa real.
 
+## Segurança e licença
+
+- **Segurança:** demonstração sem backend, sem senhas e sem chaves no código; Content Security Policy no build publicado. Detalhes e como relatar falhas em [`SECURITY.md`](SECURITY.md).
+- **Privacidade:** os dados ficam só no navegador de quem usa. Ver [privacidade e termos](https://arthursantx.github.io/privacidade/).
+- **Licença:** todos os direitos reservados ([`LICENSE`](LICENSE)). O código está público para consulta e avaliação, não para reutilização.
+
 ## Autoria
 
 Produto idealizado por **Arthur Borges**: problema, módulos, regras de negócio e critérios. Implementação feita com apoio de IA (Claude), com revisão e testes.

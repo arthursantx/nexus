@@ -20,6 +20,7 @@ export const DICIONARIO: Record<string, string> = {
   'Projeto idealizado por': 'Project conceived by',
   'Arthur Borges': 'Arthur Borges',
   'código no GitHub': 'code on GitHub',
+  'privacidade e termos': 'privacy and terms',
   'O NEXUS precisa de JavaScript para funcionar.': 'NEXUS needs JavaScript to run.',
   'Idioma': 'Language',
   'English': 'English',
